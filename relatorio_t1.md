@@ -33,7 +33,7 @@ Descreva e desenhe (use figuras) a arquitetura geral da Infraestrutura de Chaves
 - Bibliotecas de Criptografia utilizadas: `cryptography`  
 - Estrutura do projeto (pastas/arquivos):
 
-![](imagens/archives_structure.png)
+![](images/archives_structure.png)
 
 ### 2.2. Implementação das CAs (Root e Intermediária)
 
@@ -92,11 +92,11 @@ Descreva e desenhe (use figuras) a arquitetura geral da Infraestrutura de Chaves
 * Verificação da Intermediária: É verificado se a chave pública da Intermediária é capaz de validar a assinatura no certificado do Servidor.  
   Se ambas as verificações forem bem-sucedidas, o terminal confirma que a Cadeia de Confiança está intacta e válida.  
     
-- Resultado do teste de validação via terminal:![](imagens/terminal.png)
+- Resultado do teste de validação via terminal:![](images/terminal.png)
 
 ### 2.5. Evidências
 
-- Screenshot do navegador com HTTPS confiável (cadeado verde): *![](imagens/browser.png)
+- Screenshot do navegador com HTTPS confiável (cadeado verde): *![](images/browser.png)
 
 ---
 
