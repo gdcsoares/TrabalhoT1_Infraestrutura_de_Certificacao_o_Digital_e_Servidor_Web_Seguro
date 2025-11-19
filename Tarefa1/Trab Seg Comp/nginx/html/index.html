@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PPGI-SegComp | Índice</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        
+        body {
+            background-color: #0a0a12;
+            color: #00ff00;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(0, 40, 0, 0.2) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(0, 40, 0, 0.2) 0%, transparent 20%);
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        /* Efeito de scanlines */
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.15),
+                rgba(0, 0, 0, 0.15) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+            z-index: 999;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+            border-bottom: 1px solid #00cc00;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .glitch {
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            position: relative;
+            text-shadow: 0.05em 0 0 #00ff00, -0.03em -0.04em 0 #ff003c,
+                0.025em 0.04em 0 #00a2ff;
+            animation: glitch 725ms infinite;
+            color: #00ff00;
+        }
+        
+        @keyframes glitch {
+            0% {
+                text-shadow: 0.05em 0 0 #00ff00, -0.03em -0.04em 0 #ff003c,
+                    0.025em 0.04em 0 #00a2ff;
+            }
+            15% {
+                text-shadow: 0.05em 0 0 #00ff00, -0.03em -0.04em 0 #ff003c,
+                    0.025em 0.04em 0 #00a2ff;
+            }
+            16% {
+                text-shadow: -0.05em -0.025em 0 #00ff00, 0.025em 0.035em 0 #ff003c,
+                    -0.05em -0.05em 0 #00a2ff;
+            }
+            49% {
+                text-shadow: -0.05em -0.025em 0 #00ff00, 0.025em 0.035em 0 #ff003c,
+                    -0.05em -0.05em 0 #00a2ff;
+            }
+            50% {
+                text-shadow: 0.05em 0.035em 0 #00ff00, 0.03em 0 0 #ff003c,
+                    0 -0.04em 0 #00a2ff;
+            }
+            99% {
+                text-shadow: 0.05em 0.035em 0 #00ff00, 0.03em 0 0 #ff003c,
+                    0 -0.04em 0 #00a2ff;
+            }
+            100% {
+                text-shadow: -0.05em 0 0 #00ff00, -0.025em -0.04em 0 #ff003c,
+                    -0.04em -0.025em 0 #00a2ff;
+            }
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            margin-top: 10px;
+            color: #00cc00;
+            text-shadow: 0 0 5px #00cc00;
+        }
+        
+        .terminal {
+            background-color: rgba(5, 10, 15, 0.8);
+            border: 1px solid #00cc00;
+            border-radius: 5px;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        
+        .terminal-header {
+            background-color: #001a00;
+            padding: 8px 15px;
+            border-bottom: 1px solid #00cc00;
+            display: flex;
+            align-items: center;
+        }
+        
+        .terminal-buttons {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .terminal-button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        .terminal-button.close {
+            background-color: #ff5f56;
+        }
+        
+        .terminal-button.minimize {
+            background-color: #ffbd2e;
+        }
+        
+        .terminal-button.maximize {
+            background-color: #27c93f;
+        }
+        
+        .terminal-title {
+            flex: 1;
+            text-align: center;
+            color: #00cc00;
+            font-weight: bold;
+        }
+        
+        .terminal-body {
+            padding: 20px;
+        }
+        
+        .prompt {
+            color: #00ff00;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .prompt-user {
+            color: #00cc00;
+            font-weight: bold;
+        }
+        
+        .prompt-symbol {
+            margin: 0 5px;
+        }
+        
+        .command {
+            color: #00ff00;
+            animation: typing 2s steps(20, end), blink-caret 0.75s step-end infinite;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 2px solid #00ff00;
+            width: 0;
+            animation-fill-mode: forwards;
+        }
+        
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #00ff00; }
+        }
+        
+        .index-list {
+            list-style-type: none;
+            margin-top: 20px;
+        }
+        
+        .index-list li {
+            margin-bottom: 12px;
+            position: relative;
+            padding-left: 20px;
+        }
+        
+        .index-list li::before {
+            content: ">";
+            position: absolute;
+            left: 0;
+            color: #00ff00;
+        }
+        
+        .index-list a {
+            color: #00cc00;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: block;
+            padding: 5px 10px;
+            border-radius: 3px;
+        }
+        
+        .index-list a:hover {
+            background-color: rgba(0, 255, 0, 0.1);
+            color: #00ff00;
+            text-shadow: 0 0 8px #00ff00;
+            transform: translateX(5px);
+        }
+        
+        .encryption-status {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: rgba(0, 20, 0, 0.5);
+            border: 1px solid #00cc00;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+        
+        .status-line {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        
+        .status-value {
+            color: #00ff00;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background-color: #002200;
+            border-radius: 4px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background-color: #00ff00;
+            width: 100%;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.7; }
+            50% { opacity: 1; }
+            100% { opacity: 0.7; }
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #008800;
+            font-size: 0.8rem;
+            border-top: 1px solid #004400;
+        }
+        
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.1;
+            pointer-events: none;
+        }
+        
+        @media (max-width: 768px) {
+            .glitch {
+                font-size: 1.8rem;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas class="matrix-bg" id="matrix"></canvas>
+    
+    <div class="container">
+        <header>
+            <div class="glitch">PPGI-SegComp</div>
+            <div class="subtitle">Segurança em Computação - 2025/2</div>
+        </header>
+        
+        <div class="terminal">
+            <div class="terminal-header">
+                <div class="terminal-buttons">
+                    <div class="terminal-button close"></div>
+                    <div class="terminal-button minimize"></div>
+                    <div class="terminal-button maximize"></div>
+                </div>
+                <div class="terminal-title">root@segcomp:~/trabalho</div>
+            </div>
+            <div class="terminal-body">
+                <div class="prompt">
+                    <span class="prompt-user">root@segcomp</span>
+                    <span class="prompt-symbol">:</span>
+                    <span class="prompt-path">~/trabalho</span>
+                    <span class="prompt-symbol">$</span>
+                    <div class="command">cat index.txt</div>
+                </div>
+                
+                <h3 style="color: #00ff00; margin: 20px 0 10px;">ÍNDICE DO TRABALHO</h3>
+                
+                <ul class="index-list">
+                    <li><a href="#descricao">1. DESCRIÇÃO GERAL</a></li>
+                    <li><a href="#cronograma">2. CRONOGRAMA DE ENTREGAS</a></li>
+                    <li><a href="#tipos-projeto">3. TIPOS DE PROJETO</a></li>
+                    <li><a href="#opcao-a">3.1. REVISÃO DE LITERATURA (SURVEY)</a></li>
+                    <li><a href="#opcao-b">3.2. PROTÓTIPO / IMPLEMENTAÇÃO EXPERIMENTAL</a></li>
+                </ul>
+                
+                <div class="encryption-status">
+                    <div class="status-line">
+                        <span>SISTEMA:</span>
+                        <span class="status-value">ATIVO</span>
+                    </div>
+                    <div class="status-line">
+                        <span>SEGURANÇA:</span>
+                        <span class="status-value">AES-256 / RSA-4096</span>
+                    </div>
+                    <div class="status-line">
+                        <span>STATUS DO TRABALHO:</span>
+                        <span class="status-value">CONCLUÍDO</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>DEPARTAMENTO DE INFORMÁTICA - CENTRO TECNOLÓGICO</p>
+            <p>PROF. RODOLFO DA SILVA VILLAÇA - rodolfo.villaca@ufes.br</p>
+        </footer>
+    </div>
+
+    <script>
+        // Efeito Matrix no fundo
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$#@%&*";
+        const charArray = chars.split("");
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+        const drops = [];
+        
+        for (let x = 0; x < columns; x++) {
+            drops[x] = 1;
+        }
+        
+        function drawMatrix() {
+            ctx.fillStyle = "rgba(0, 10, 0, 0.04)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = "#00FF00";
+            ctx.font = fontSize + "px monospace";
+            
+            for (let i = 0; i < drops.length; i++) {
+                const text = charArray[Math.floor(Math.random() * charArray.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                
+                drops[i]++;
+            }
+        }
+        
+        setInterval(drawMatrix, 35);
+        
+        // Ajustar canvas quando a janela for redimensionada
+        window.addEventListener('resize', function() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>

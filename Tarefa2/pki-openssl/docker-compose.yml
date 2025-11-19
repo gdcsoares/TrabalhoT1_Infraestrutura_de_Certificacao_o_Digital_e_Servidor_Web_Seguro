@@ -1,0 +1,10 @@
+version: '3'
+services:
+  nginx:
+    build: ./nginx
+    ports:
+      - "8443:443"
+      - "8080:80"
+    volumes:
+      - ./certs/server/server-chain.crt:/etc/ssl/certs/server.crt
+      - ./certs/server/server.key:/etc/ssl/private/server.key

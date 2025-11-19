@@ -1,0 +1,11 @@
+version: "3"
+
+services:
+  web:
+    build: ./nginx
+    ports:
+      - "8443:443"
+    volumes:
+      - ./certs/server.key:/etc/ssl/private/server.key:ro
+      - ./certs/chain.pem:/etc/ssl/certs/chain.pem:ro
+      - ./nginx/html:/usr/share/nginx/html:ro
