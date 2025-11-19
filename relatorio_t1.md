@@ -18,7 +18,7 @@
 ## 1\. Arquitetura do Ambiente
 
 Descreva e desenhe (use figuras) a arquitetura geral da Infraestrutura de Chaves Públicas (PKI) implementada, composta por CA Raiz e CA Intermediária. Destaque as diferenças de implementação entre as duas tarefas:  
-![][image1]
+![](images/arquitetura_pki.png)
 
 - **Cenário 1 (Python):** Automação da emissão e assinatura através de scripts/serviço desenvolvido em Python.  
 - **Cenário 2 (OpenSSL):** Processo manual ou via shell script utilizando a ferramenta de linha de comando OpenSSL.
@@ -33,7 +33,7 @@ Descreva e desenhe (use figuras) a arquitetura geral da Infraestrutura de Chaves
 - Bibliotecas de Criptografia utilizadas: `cryptography`  
 - Estrutura do projeto (pastas/arquivos):
 
-![][image2]
+![](imagens/archives_structure.png)
 
 ### 2.2. Implementação das CAs (Root e Intermediária)
 
@@ -92,11 +92,11 @@ Descreva e desenhe (use figuras) a arquitetura geral da Infraestrutura de Chaves
 * Verificação da Intermediária: É verificado se a chave pública da Intermediária é capaz de validar a assinatura no certificado do Servidor.  
   Se ambas as verificações forem bem-sucedidas, o terminal confirma que a Cadeia de Confiança está intacta e válida.  
     
-- Resultado do teste de validação via terminal:![][image3]
+- Resultado do teste de validação via terminal:![](imagens/terminal.png)
 
 ### 2.5. Evidências
 
-- Screenshot do navegador com HTTPS confiável (cadeado verde): *![][image4]*
+- Screenshot do navegador com HTTPS confiável (cadeado verde): *![](imagens/browser.png)
 
 ---
 
