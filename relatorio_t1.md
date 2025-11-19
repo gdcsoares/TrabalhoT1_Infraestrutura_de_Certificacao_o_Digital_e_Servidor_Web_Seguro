@@ -92,7 +92,9 @@ Descreva e desenhe (use figuras) a arquitetura geral da Infraestrutura de Chaves
 * Verificação da Intermediária: É verificado se a chave pública da Intermediária é capaz de validar a assinatura no certificado do Servidor.  
   Se ambas as verificações forem bem-sucedidas, o terminal confirma que a Cadeia de Confiança está intacta e válida.  
     
-- Resultado do teste de validação via terminal:![](images/terminal.png)
+- Resultado do teste de validação via terminal:
+
+  ![](images/terminal.png)
 
 ### 2.5. Evidências
 
