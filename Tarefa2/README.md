@@ -1,82 +1,121 @@
 # Trabalho de Segurança da Computação - Tarefa 2
 
-Este projeto demonstra a criação completa de uma infraestrutura de
-chaves públicas (PKI) usando **OpenSSL**, incluindo:
+Este passo a passo explica como executar o projeto, gerar certificados, subir o ambiente com Docker e validar o funcionamento.
 
--   Geração de **Root CA**
--   Geração de **Intermediate CA**
--   Emissão de **certificado de servidor**
--   Geração automática via scripts Shell
--   Ambiente HTTPS usando **Nginx + Docker**
--   Cadeia completa de certificação (server → intermediate → root)
+---
 
-## Estrutura do Projeto
+##  Estrutura do Projeto
 
-    pki-openssl/
-    ├── docker-compose.yml
-    ├── nginx/
-    │   ├── Dockerfile
-    │   ├── default.conf
-    │   └── index.html
-    ├── scripts/
-    │   ├── create_root_ca.sh
-    │   ├── create_intermediate_ca.sh
-    │   ├── create_server_cert.sh
-    │   └── setup_all.sh
-    └── certs/
-        ├── root/
-        │   ├── rootCA.key
-        │   └── rootCA.crt
-        ├── intermediate/
-        │   ├── intermediateCA.key
-        │   └── intermediateCA.crt
-        └── server/
-            ├── server.key
-            ├── server.crt
-            └── server-chain.crt
+```
+pki-openssl/
+├── docker-compose.yml
+├── nginx/
+│   ├── Dockerfile
+│   ├── default.conf
+│   └── index.html
+├── validate.sh
+├── scripts/
+│   ├── create_root_ca.sh
+│   ├── create_intermediate_ca.sh
+│   ├── create_server_cert.sh
+│   └── setup_all.sh
+└── certs/
+    ├── root/
+    │   ├── rootCA.key
+    │   └── rootCA.crt
+    ├── intermediate/
+    │   ├── intermediateCA.key
+    │   └── intermediateCA.crt
+    └── server/
+        ├── server.key
+        ├── server.crt
+        └── server-chain.crt
+```
 
-## 1. Pré-requisitos
+---
 
--   **Linux ou WSL**
--   **OpenSSL** instalado
--   **Docker** e **Docker Compose**
+##  1. Pré-requisitos
 
-## 2. Gerando os Certificados
+- **Linux** ou **WSL**
+- **OpenSSL** instalado
+- **Docker** e **Docker Compose**
 
-Os certificados podem ser criados **individualmente** ou
-**automaticamente** usando o script principal.
+---
 
-### 2.1 Execução completa:
+## 2. Geração dos Certificados
 
-    chmod +x scripts/*.sh
-    ./scripts/setup_all.sh
+Nesses passos serão gerados os certificados que ficarão salvos no diretório `certs/`
 
-### 3. Execução Manual
+### **2.1 Execução completa**
 
-#### 3.1 Criar Root CA
+Desenvolvelmos um script que fará todos os passos, basta executá-lo. No diretório `scripts/`:
 
-    ./scripts/create_root_ca.sh
+```bash
+chmod +x *.sh
+./setup_all.sh
+```
 
-#### 3.2 Criar Intermediate CA
+Isso irá:
 
-    ./scripts/create_intermediate_ca.sh
+- Criar Root CA
+- Criar Intermediate CA
+- Criar certificado do servidor
+- Montar `server-chain.crt`
 
-#### 3.3 Criar Certificado do Servidor
+## 3. Subindo o Ambiente com Docker
 
-    ./scripts/create_server_cert.sh
+Na raiz do projeto execute:
 
-## 4. Subindo o Servidor HTTPS com Docker
+```bash
+docker-compose up --build
+```
 
-    docker-compose up --build
+Isso fará:
 
-Acesse: https://localhost
+- Construir a imagem do Nginx
+- Iniciar o servidor HTTPS local
 
-## 5. Tornando o HTTPS Confiável
+---
 
-Importe:
+## 4. Acessando o Servidor
 
-    certs/root/rootCA.crt
+Após subir os containers, abra no navegador:
 
-## 6. Finalidade do Projeto
+```
+https://localhost
+```
 
-Demonstração de uma PKI completa com OpenSSL + Docker + Nginx.
+Você verá a página `index.html` servida **via HTTPS** usando o certificado gerado.
+
+Será possível observar que o navegador estará com uma navegação não segura.
+
+Para tornar segura, será necessário importar o certificado `rootCA.crt` no navegador.
+
+---
+
+## 5. Testes
+
+Você pode testar o certificado no diretório raiz por meio do script de validação:
+
+```bash
+chmod +x validate.sh
+./validate.sh
+```
+
+Isso permite verificar:
+
+- Se a cadeia de certificação é válida
+- Se o servidor foi assinado pela Intermediate
+- Se a Intermediate foi assinada pela Root
+
+---
+
+## 6. Finalidade do Trabalho
+
+Com isso, nesse projeto foi possível demonstrar:
+
+- Criar uma hierarquia PKI completa manualmente
+- Assinar certificados usando Root e Intermediate
+- Construir a cadeia de certificação `server-chain.crt`
+- Configuração de servidor HTTPS usando Nginx
+- Uso de Docker para empacotamento do ambiente
